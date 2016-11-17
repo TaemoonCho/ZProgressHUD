@@ -763,14 +763,17 @@ internal extension UIImage {
         }
         let rect = CGRectMake(0.0, 0.0, self.size.width, self.size.height)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, self.scale)
-        let context = UIGraphicsGetCurrentContext()
         self.drawInRect(rect)
-        CGContextSetFillColorWithColor(context, color!.CGColor)
-        CGContextSetBlendMode(context, CGBlendMode.SourceAtop)
-        CGContextFillRect(context, rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
+        
+        if let context = UIGraphicsGetCurrentContext() {
+            CGContextSetFillColorWithColor(context, color!.CGColor)
+            CGContextSetBlendMode(context, CGBlendMode.SourceAtop)
+            CGContextFillRect(context, rect)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return image
+        }
+        return UIImage()
     }
     
     /**
